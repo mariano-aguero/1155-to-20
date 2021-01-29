@@ -26,25 +26,36 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"initCode\",\"type\":\"bytes\"},{\"internalType\":\"bytes32\",\"name\":\"salt\",\"type\":\"bytes32\"}],\"name\":\"deploy\",\"outputs\":[{\"internalType\":\"address payable\",\"name\":\"deployedContract\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/Alan/Documents/GitHub/1155-to-20/contracts/ISingletonFactory.sol\":\"ISingletonFactory\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/Alan/Documents/GitHub/1155-to-20/contracts/ISingletonFactory.sol\":{\"keccak256\":\"0x82dd3a70bea1303f88254c0e2b73d4b5809471895aefb44513d541bf78caa43c\",\"urls\":[\"bzz-raw://0fc0eb58265f865c46d0c82d2ab9061046593f3865e8befb7d66d0cf1a73de1a\",\"dweb:/ipfs/Qmd3ttS5zAG457BEHRPBdyzHkSvUf51BnnMZ2idE9EzKbU\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"initCode\",\"type\":\"bytes\"},{\"internalType\":\"bytes32\",\"name\":\"salt\",\"type\":\"bytes32\"}],\"name\":\"deploy\",\"outputs\":[{\"internalType\":\"address payable\",\"name\":\"deployedContract\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/mariano/Proyects/1155-to-20/src/ISingletonFactory.sol\":\"ISingletonFactory\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/mariano/Proyects/1155-to-20/src/ISingletonFactory.sol\":{\"keccak256\":\"0x1c12fba70d29f88fe3f20f1f6ed5561f39f5fb4c71c2f4fae4030f543104e441\",\"urls\":[\"bzz-raw://aad47119da92d2001543ad0ba7d4fd39e3335ca71b36fb4d6d21318e89c2379a\",\"dweb:/ipfs/QmYP2qrsVEAMbqYJpKHJJKvQZwFRg14aHoTtdu8exRh6bR\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "// EIP 2470\ninterface ISingletonFactory {\n    function deploy(\n        bytes calldata initCode,\n        bytes32 salt\n    ) external returns (address payable deployedContract);\n}\n",
-  "sourcePath": "C:/Users/Alan/Documents/GitHub/1155-to-20/contracts/ISingletonFactory.sol",
+  "source": "pragma solidity ^0.6.12;\n\n// EIP 2470\ninterface ISingletonFactory {\n    function deploy(\n        bytes calldata initCode,\n        bytes32 salt\n    ) external returns (address payable deployedContract);\n}\n",
+  "sourcePath": "/home/mariano/Proyects/1155-to-20/src/ISingletonFactory.sol",
   "ast": {
-    "absolutePath": "/C/Users/Alan/Documents/GitHub/1155-to-20/contracts/ISingletonFactory.sol",
+    "absolutePath": "/home/mariano/Proyects/1155-to-20/src/ISingletonFactory.sol",
     "exportedSymbols": {
       "ISingletonFactory": [
-        10
+        11
       ]
     },
-    "id": 11,
+    "id": 12,
     "license": null,
     "nodeType": "SourceUnit",
     "nodes": [
+      {
+        "id": 1,
+        "literals": [
+          "solidity",
+          "^",
+          "0.6",
+          ".12"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:0"
+      },
       {
         "abstract": false,
         "baseContracts": [],
@@ -52,9 +63,9 @@
         "contractKind": "interface",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 10,
+        "id": 11,
         "linearizedBaseContracts": [
-          10
+          11
         ],
         "name": "ISingletonFactory",
         "nodeType": "ContractDefinition",
@@ -63,7 +74,7 @@
             "body": null,
             "documentation": null,
             "functionSelector": "4af63f02",
-            "id": 9,
+            "id": 10,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -71,18 +82,18 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 5,
+              "id": 6,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2,
+                  "id": 3,
                   "mutability": "mutable",
                   "name": "initCode",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 9,
-                  "src": "71:23:0",
+                  "scope": 10,
+                  "src": "97:23:0",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -90,10 +101,10 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 1,
+                    "id": 2,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
-                    "src": "71:5:0",
+                    "src": "97:5:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes_storage_ptr",
                       "typeString": "bytes"
@@ -104,13 +115,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 4,
+                  "id": 5,
                   "mutability": "mutable",
                   "name": "salt",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 9,
-                  "src": "104:12:0",
+                  "scope": 10,
+                  "src": "130:12:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -118,10 +129,10 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 3,
+                    "id": 4,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
-                    "src": "104:7:0",
+                    "src": "130:7:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes32",
                       "typeString": "bytes32"
@@ -131,21 +142,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "61:61:0"
+              "src": "87:61:0"
             },
             "returnParameters": {
-              "id": 8,
+              "id": 9,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7,
+                  "id": 8,
                   "mutability": "mutable",
                   "name": "deployedContract",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 9,
-                  "src": "141:32:0",
+                  "scope": 10,
+                  "src": "167:32:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -153,10 +164,10 @@
                     "typeString": "address payable"
                   },
                   "typeName": {
-                    "id": 6,
+                    "id": 7,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "141:15:0",
+                    "src": "167:15:0",
                     "stateMutability": "payable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address_payable",
@@ -167,176 +178,204 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "140:34:0"
+              "src": "166:34:0"
             },
-            "scope": 10,
-            "src": "46:129:0",
+            "scope": 11,
+            "src": "72:129:0",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 11,
-        "src": "12:165:0"
+        "scope": 12,
+        "src": "38:165:0"
       }
     ],
-    "src": "12:166:0"
+    "src": "0:204:0"
   },
   "legacyAST": {
-    "absolutePath": "/C/Users/Alan/Documents/GitHub/1155-to-20/contracts/ISingletonFactory.sol",
-    "exportedSymbols": {
-      "ISingletonFactory": [
-        10
-      ]
+    "attributes": {
+      "absolutePath": "/home/mariano/Proyects/1155-to-20/src/ISingletonFactory.sol",
+      "exportedSymbols": {
+        "ISingletonFactory": [
+          11
+        ]
+      },
+      "license": null
     },
-    "id": 11,
-    "license": null,
-    "nodeType": "SourceUnit",
-    "nodes": [
+    "children": [
       {
-        "abstract": false,
-        "baseContracts": [],
-        "contractDependencies": [],
-        "contractKind": "interface",
-        "documentation": null,
-        "fullyImplemented": false,
-        "id": 10,
-        "linearizedBaseContracts": [
-          10
-        ],
-        "name": "ISingletonFactory",
-        "nodeType": "ContractDefinition",
-        "nodes": [
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.6",
+            ".12"
+          ]
+        },
+        "id": 1,
+        "name": "PragmaDirective",
+        "src": "0:24:0"
+      },
+      {
+        "attributes": {
+          "abstract": false,
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "interface",
+          "documentation": null,
+          "fullyImplemented": false,
+          "linearizedBaseContracts": [
+            11
+          ],
+          "name": "ISingletonFactory",
+          "scope": 12
+        },
+        "children": [
           {
-            "body": null,
-            "documentation": null,
-            "functionSelector": "4af63f02",
-            "id": 9,
-            "implemented": false,
-            "kind": "function",
-            "modifiers": [],
-            "name": "deploy",
-            "nodeType": "FunctionDefinition",
-            "overrides": null,
-            "parameters": {
-              "id": 5,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 2,
-                  "mutability": "mutable",
-                  "name": "initCode",
-                  "nodeType": "VariableDeclaration",
-                  "overrides": null,
-                  "scope": 9,
-                  "src": "71:23:0",
-                  "stateVariable": false,
-                  "storageLocation": "calldata",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_bytes_calldata_ptr",
-                    "typeString": "bytes"
-                  },
-                  "typeName": {
-                    "id": 1,
-                    "name": "bytes",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "71:5:0",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_bytes_storage_ptr",
-                      "typeString": "bytes"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                },
-                {
-                  "constant": false,
-                  "id": 4,
-                  "mutability": "mutable",
-                  "name": "salt",
-                  "nodeType": "VariableDeclaration",
-                  "overrides": null,
-                  "scope": 9,
-                  "src": "104:12:0",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_bytes32",
-                    "typeString": "bytes32"
-                  },
-                  "typeName": {
+            "attributes": {
+              "body": null,
+              "documentation": null,
+              "functionSelector": "4af63f02",
+              "implemented": false,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "deploy",
+              "overrides": null,
+              "scope": 11,
+              "stateMutability": "nonpayable",
+              "virtual": false,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "initCode",
+                      "overrides": null,
+                      "scope": 10,
+                      "stateVariable": false,
+                      "storageLocation": "calldata",
+                      "type": "bytes",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes",
+                          "type": "bytes"
+                        },
+                        "id": 2,
+                        "name": "ElementaryTypeName",
+                        "src": "97:5:0"
+                      }
+                    ],
                     "id": 3,
-                    "name": "bytes32",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "104:7:0",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_bytes32",
-                      "typeString": "bytes32"
-                    }
+                    "name": "VariableDeclaration",
+                    "src": "97:23:0"
                   },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "61:61:0"
-            },
-            "returnParameters": {
-              "id": 8,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 7,
-                  "mutability": "mutable",
-                  "name": "deployedContract",
-                  "nodeType": "VariableDeclaration",
-                  "overrides": null,
-                  "scope": 9,
-                  "src": "141:32:0",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address_payable",
-                    "typeString": "address payable"
-                  },
-                  "typeName": {
-                    "id": 6,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "141:15:0",
-                    "stateMutability": "payable",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address_payable",
-                      "typeString": "address payable"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "140:34:0"
-            },
-            "scope": 10,
-            "src": "46:129:0",
-            "stateMutability": "nonpayable",
-            "virtual": false,
-            "visibility": "external"
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "salt",
+                      "overrides": null,
+                      "scope": 10,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes32",
+                          "type": "bytes32"
+                        },
+                        "id": 4,
+                        "name": "ElementaryTypeName",
+                        "src": "130:7:0"
+                      }
+                    ],
+                    "id": 5,
+                    "name": "VariableDeclaration",
+                    "src": "130:12:0"
+                  }
+                ],
+                "id": 6,
+                "name": "ParameterList",
+                "src": "87:61:0"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "deployedContract",
+                      "overrides": null,
+                      "scope": 10,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address payable",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "stateMutability": "payable",
+                          "type": "address payable"
+                        },
+                        "id": 7,
+                        "name": "ElementaryTypeName",
+                        "src": "167:15:0"
+                      }
+                    ],
+                    "id": 8,
+                    "name": "VariableDeclaration",
+                    "src": "167:32:0"
+                  }
+                ],
+                "id": 9,
+                "name": "ParameterList",
+                "src": "166:34:0"
+              }
+            ],
+            "id": 10,
+            "name": "FunctionDefinition",
+            "src": "72:129:0"
           }
         ],
-        "scope": 11,
-        "src": "12:165:0"
+        "id": 11,
+        "name": "ContractDefinition",
+        "src": "38:165:0"
       }
     ],
-    "src": "12:166:0"
+    "id": 12,
+    "name": "SourceUnit",
+    "src": "0:204:0"
   },
   "compiler": {
     "name": "solc",
     "version": "0.6.12+commit.27d51765.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.2.4",
-  "updatedAt": "2020-09-30T23:56:56.241Z",
+  "schemaVersion": "3.3.3",
+  "updatedAt": "2021-01-27T21:43:41.142Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

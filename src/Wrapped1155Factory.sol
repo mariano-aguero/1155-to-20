@@ -51,11 +51,11 @@ contract Wrapped1155Factory is ERC1155Receiver {
         override
         returns (bytes4)
     {
-        address recipient = data.length > 0 ? 
+        address recipient = data.length > 0 ?
             abi.decode(data, (address)) :
             operator;
 
-        Wrapped1155 wrapped1155 = requireWrapped1155(IERC1155(msg.sender), id);
+        Wrapped1155 wrapped1155 = requireWrapped1155(IERC1155(msg.sender), id, data);
         wrapped1155.mint(recipient, value);
 
         return this.onERC1155Received.selector;
@@ -77,7 +77,7 @@ contract Wrapped1155Factory is ERC1155Receiver {
             operator;
 
         for (uint i = 0; i < ids.length; i++) {
-            requireWrapped1155(IERC1155(msg.sender), ids[i]).mint(recipient, values[i]);
+            requireWrapped1155(IERC1155(msg.sender), ids[i], data).mint(recipient, values[i]);
         }
 
         return this.onERC1155BatchReceived.selector;
@@ -92,7 +92,7 @@ contract Wrapped1155Factory is ERC1155Receiver {
     )
         external
     {
-        getWrapped1155(multiToken, tokenId).burn(msg.sender, amount);
+        getWrapped1155(multiToken, tokenId, data).burn(msg.sender, amount);
         multiToken.safeTransferFrom(address(this), recipient, tokenId, amount, data);
     }
 
@@ -107,16 +107,19 @@ contract Wrapped1155Factory is ERC1155Receiver {
     {
         require(tokenIds.length == amounts.length, "Wrapped1155Factory: mismatched input arrays");
         for (uint i = 0; i < tokenIds.length; i++) {
-            getWrapped1155(multiToken, tokenIds[i]).burn(msg.sender, amounts[i]);
+            getWrapped1155(multiToken, tokenIds[i], data).burn(msg.sender, amounts[i]);
         }
         multiToken.safeBatchTransferFrom(address(this), recipient, tokenIds, amounts, data);
     }
 
-    function getWrapped1155DeployBytecode(IERC1155 multiToken, uint256 tokenId)
+    function getWrapped1155DeployBytecode(IERC1155 multiToken, uint256 tokenId, bytes calldata data)
         public
         view
         returns (bytes memory)
     {
+
+        ( address recipient, string memory name, string memory symbol, uint8 decimals ) = abi.decode(data, (address, string, string, uint8));
+
         return abi.encodePacked(
             // assign factory
             hex"73",
@@ -135,17 +138,17 @@ contract Wrapped1155Factory is ERC1155Receiver {
             
             // assign name
             hex"7f",
-            "Wrapped ERC-1155", uint128(32),
+            name, uint128(32),
             hex"600655",
             
             // assign symbol
             hex"7f",
-            "WMT", uint232(6),
+            symbol, uint232(6),
             hex"600755",
             
             // assign decimals
             hex"60",
-            uint8(18),
+            decimals,
             hex"600855",
 
             // push 44 (length of runtime)
@@ -170,7 +173,7 @@ contract Wrapped1155Factory is ERC1155Receiver {
         );
     }
     
-    function getWrapped1155(IERC1155 multiToken, uint256 tokenId)
+    function getWrapped1155(IERC1155 multiToken, uint256 tokenId, bytes calldata data)
         public
         view
         returns (Wrapped1155)
@@ -179,7 +182,7 @@ contract Wrapped1155Factory is ERC1155Receiver {
             uint8(0xff),
             this,
             uint256(1155),
-            keccak256(getWrapped1155DeployBytecode(multiToken, tokenId))
+            keccak256(getWrapped1155DeployBytecode(multiToken, tokenId, data))
         )))));
     }
 
@@ -189,11 +192,11 @@ contract Wrapped1155Factory is ERC1155Receiver {
         Wrapped1155 indexed wrappedToken
     );
 
-    function requireWrapped1155(IERC1155 multiToken, uint256 tokenId)
+    function requireWrapped1155(IERC1155 multiToken, uint256 tokenId, bytes calldata data)
         public
         returns (Wrapped1155)
     {
-        bytes memory deployBytecode = getWrapped1155DeployBytecode(multiToken, tokenId);
+        bytes memory deployBytecode = getWrapped1155DeployBytecode(multiToken, tokenId, data);
 
         address wrapped1155Address = address(uint256(keccak256(abi.encodePacked(
             uint8(0xff),
