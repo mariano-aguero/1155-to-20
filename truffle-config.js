@@ -71,6 +71,7 @@ if (gasPrice) {
 }
 
 module.exports = {
+  contracts_directory: "./src",
   networks,
   compilers: {
     solc: {
