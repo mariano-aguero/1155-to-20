@@ -1,4 +1,5 @@
 const chai = require('chai');
+const ethers = require('ethers');
 const { expect } = chai;
 chai.use(require('chai-bn')(web3.utils.BN));
 
@@ -11,6 +12,23 @@ const {
   getCollectionId,
   getPositionId,
 } = require('@gnosis.pm/conditional-tokens-contracts/utils/id-helpers')(web3.utils);
+
+const buildMetadataParams = (address, name, symbol, decimals) => {
+    return ethers.utils.defaultAbiCoder.encode(
+        [
+            'address',
+            'string',
+            'string',
+            'uint8',
+        ],
+        [
+            address,
+            name,
+            symbol,
+            decimals
+        ]
+    );
+};
 
 contract('Wrapped1155Factory', function (accounts) {
   let wrapped1155Factory;
@@ -44,8 +62,8 @@ contract('Wrapped1155Factory', function (accounts) {
   before('mint tokens and junk', async function () {
     await conditionalTokens.prepareCondition(oracle, questionId, outcomeSlotCount);
     await Promise.all(accounts.map(async account => {
-      await toyToken.mint(account, 100);
-      await toyToken.approve(conditionalTokens.address, 100, { from: account });
+      await toyToken.mint(account, 200);
+      await toyToken.approve(conditionalTokens.address, 200, { from: account });
       await conditionalTokens.splitPosition(
         toyToken.address,
         zeroBytes32,
@@ -57,25 +75,41 @@ contract('Wrapped1155Factory', function (accounts) {
     }));
   });
   
-  let unusedId, singleId, batchIds;
+  let unusedId, singleId, batchIds, metadataId;
   let unusedWrapped1155;
   let singleWrapped1155;
-  let batchWrapped1155s;
+  let batchWrapped1155;
+  let metadataWrapped1155;
+
+  const dataOriginal = buildMetadataParams(accounts[0], 'Wrapped ERC-1155', 'WMT', 18)
+  const dataWithMeta = buildMetadataParams(accounts[0], 'Test', 'TTT', 18)
+
   before('get token addresses', async function () {
-    [unusedId, singleId, ...batchIds] = positionIds;
+    [unusedId, singleId, metadataId, ...batchIds] = positionIds;
 
     unusedWrapped1155 = await wrapped1155Factory.getWrapped1155(
       conditionalTokens.address,
       unusedId,
+      dataOriginal
     );
+
     singleWrapped1155 = await wrapped1155Factory.getWrapped1155(
       conditionalTokens.address,
       singleId,
+      dataOriginal,
     );
-    batchWrapped1155s = await Promise.all(
+
+    metadataWrapped1155 = await wrapped1155Factory.getWrapped1155(
+      conditionalTokens.address,
+      metadataId,
+      dataWithMeta,
+    );
+
+    batchWrapped1155 = await Promise.all(
       batchIds.map(id => wrapped1155Factory.getWrapped1155(
         conditionalTokens.address,
         id,
+        dataOriginal,
       ))
     );
   });
@@ -107,7 +141,7 @@ contract('Wrapped1155Factory', function (accounts) {
       wrapped1155Factory.address,
       singleId,
       20,
-      emptyBytes,
+      dataOriginal,
       { from: account },
     );
     
@@ -137,7 +171,7 @@ contract('Wrapped1155Factory', function (accounts) {
       singleId,
       5,
       account,
-      emptyBytes,
+      dataOriginal,
       { from: account },
     );
 
@@ -151,7 +185,7 @@ contract('Wrapped1155Factory', function (accounts) {
     const repeat = elem => new Array(batchIds.length).fill(elem)
     const account = accounts[0];
 
-    const codeBefore = await Promise.all(batchWrapped1155s.map(
+    const codeBefore = await Promise.all(batchWrapped1155.map(
       wrapped1155 => web3.eth.getCode(wrapped1155),
     ));
     for (const code of codeBefore) {
@@ -163,18 +197,18 @@ contract('Wrapped1155Factory', function (accounts) {
       wrapped1155Factory.address,
       batchIds,
       repeat(20),
-      emptyBytes,
+      dataOriginal,
       { from: account },
     );
 
-    const codeAfter = await Promise.all(batchWrapped1155s.map(
+    const codeAfter = await Promise.all(batchWrapped1155.map(
       wrapped1155 => web3.eth.getCode(wrapped1155),
     ));
     for (const code of codeAfter) {
       expect(codeAfter).to.not.equal(emptyBytes);
     }
     
-    const tokens = await Promise.all(batchWrapped1155s.map(
+    const tokens = await Promise.all(batchWrapped1155.map(
       wrapped1155 => Wrapped1155.at(wrapped1155),
     ));
 
@@ -204,7 +238,7 @@ contract('Wrapped1155Factory', function (accounts) {
       batchIds,
       repeat(5),
       account,
-      emptyBytes,
+      dataOriginal,
       { from: account },
     );
     
@@ -213,4 +247,56 @@ contract('Wrapped1155Factory', function (accounts) {
     expect(await totalWrappedSupplies()).to.eql(repeat(15));
     expect(await accountWrappedBalances()).to.eql(repeat(15));
   });
+
+    it('should be able to work with a single 1155 token and metadata', async function () {
+        const account = accounts[0];
+
+        const codeBefore = await web3.eth.getCode(metadataWrapped1155);
+        expect(codeBefore).to.equal(emptyBytes);
+
+        await conditionalTokens.safeTransferFrom(
+            account,
+            wrapped1155Factory.address,
+            metadataId,
+            20,
+            dataWithMeta,
+            { from: account },
+        );
+
+        const codeAfter = await web3.eth.getCode(metadataWrapped1155);
+        expect(codeAfter).to.not.equal(emptyBytes);
+
+        const token = await Wrapped1155.at(metadataWrapped1155);
+        expect(await token.factory()).to.equal(wrapped1155Factory.address);
+        expect(await token.multiToken()).to.equal(conditionalTokens.address);
+        expect(await token.tokenId()).to.be.a.bignumber.that.equals(web3.utils.toBN(metadataId));
+        expect(await token.name()).to.equal('Wrapped ERC-1155');
+        expect(await token.symbol()).to.equal('WMT');
+        expect(await token.decimals()).to.be.a.bignumber.that.equals('18');
+
+        const accountBalance1155 = () => conditionalTokens.balanceOf(account, metadataId);
+        const factoryBalance1155 = () => conditionalTokens.balanceOf(wrapped1155Factory.address, metadataId);
+        const totalWrappedSupply = () => token.totalSupply();
+        const accountWrappedBalance = () => token.balanceOf(account);
+
+        expect(await accountBalance1155()).to.be.a.bignumber.that.equals('80');
+        expect(await factoryBalance1155()).to.be.a.bignumber.that.equals('20');
+        expect(await totalWrappedSupply()).to.be.a.bignumber.that.equals('20');
+        expect(await accountWrappedBalance()).to.be.a.bignumber.that.equals('20');
+
+        await wrapped1155Factory.unwrap(
+            conditionalTokens.address,
+            metadataId,
+            5,
+            account,
+            dataWithMeta,
+            { from: account },
+        );
+
+        expect(await accountBalance1155()).to.be.a.bignumber.that.equals('85');
+        expect(await factoryBalance1155()).to.be.a.bignumber.that.equals('15');
+        expect(await totalWrappedSupply()).to.be.a.bignumber.that.equals('15');
+        expect(await accountWrappedBalance()).to.be.a.bignumber.that.equals('15');
+    });
+
 });
